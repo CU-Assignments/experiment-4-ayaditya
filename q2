@@ -1,0 +1,47 @@
+import java.util.*;
+
+class Card {
+    String symbol;
+    String name;
+
+    Card(String symbol, String name) {
+        this.symbol = symbol;
+        this.name = name;
+    }
+
+    public String toString() {
+        return "Card: " + name + " (Symbol: " + symbol + ")";
+    }
+}
+
+public class CardCollection {
+    static Map<String, List<Card>> cardMap = new HashMap<>();
+
+    static void addCard(String symbol, String name) {
+        cardMap.putIfAbsent(symbol, new ArrayList<>());
+        cardMap.get(symbol).add(new Card(symbol, name));
+    }
+
+    static List<Card> findCardsBySymbol(String symbol) {
+        return cardMap.getOrDefault(symbol, Collections.emptyList());
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. Add Card 2. Find Cards 3. Exit");
+            int choice = sc.nextInt();
+            if (choice == 3) break;
+            if (choice == 1) {
+                System.out.println("Enter Symbol and Card Name:");
+                addCard(sc.next(), sc.next());
+            } else if (choice == 2) {
+                System.out.println("Enter Symbol:");
+                List<Card> cards = findCardsBySymbol(sc.next());
+                if (cards.isEmpty()) System.out.println("No cards found");
+                else cards.forEach(System.out::println);
+            }
+        }
+        sc.close();
+    }
+}
